@@ -1,0 +1,28 @@
+---
+alwaysApply: true
+---
+Audience and Focus: CFOs, non-technical, primary focus on Retail Store Performance Monitoring.
+
+Critical Requirements: Data Privacy (no data leaving Snowflake), Ease of Use, and Native availability.
+
+Use Case 1: Store Performance & Pareto Analysis for state-by-state variance and underperformance identification.
+
+Use Case 2: Historic Event Impact (Cyclone Alfred) analysis across Pre, During, and Post impact for financial quantification.
+
+Required Capabilities: Showcasing secure External Data Integration, Time Savings, and Auditable results.
+
+
+Use Case 1: Store Performance & Pareto Analysis
+• Action Sequence: Show YTD performance across states → Compare performance (State A vs. State B) → If low, show the Pareto (80/20) curve of outcomes.
+• Financial Insight: Define the difference between a "flat Pareto" (underperformance) and a "steep Pareto" (good performance) state.
+• Demo Focus: Quickly drill through these steps to highlight the analysis and the dollar impact of underperformance.
+
+
+Use Case 2: Historic Event Impact
+• Common Question: "There was a storm, so find the outcome of it."
+• Event Example: Cyclone Alfred.
+• Analysis:
+  • Use external Marketplace data to define the impact radius and timeline.
+  • Analyze sales Pre, During, and Post the cyclone in the area of impact.
+  • Identify what people were buying from Wesfarmers stores during these times.
+• Financial Insight: Quantify the estimated dollar value of the impact (e.g., lost sales, inventory surge).

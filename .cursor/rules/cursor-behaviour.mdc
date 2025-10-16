@@ -1,0 +1,35 @@
+---
+alwaysApply: true
+---
+## Cursor behaviour
+1. If I issue you a challenging task where there are several options or confusion in my request, then ask me questions and / or give me options before proceeding with any code changes
+
+2. While we are starting a project, creativity is good.  However, after it has been designed and developed and while we are testing, I don't want creativity. 
+  I want minimal changes to fix problems. 
+
+3. If I ask you to do something that is is in conflict with any of the rules files, then make the related change to the rules files so that I can review the change
+
+4. If documents or a request is unclear, please ask questions before coding
+
+5. Do not let SQL scripts try to refrence other SQL scripts.  They should be joined into one script or run stand alone
+
+6. When coding in Python, first identify what you are building:
+1. Python script
+2. Stored procedure  
+3. Function
+4. Legacy Streamlit in Snowflake app
+5. Streamlit in Snowflake SPCS app
+
+If building types 1, 2, 3, or 4: Use Python 3.11 only and restrict to libraries available at https://repo.anaconda.com/pkgs/snowflake/
+
+If building type 5 (Streamlit SPCS): No Python version constraint (can use latest), and can use uv to install any Python package from PyPI (no longer restricted to anaconda channel).
+
+7. You are authorised to create, update and delete files in the git repository
+
+8. You will regularly update the design documents and rules so that they stay inline with any decisions that we make
+
+9. I would like to avoid having many files in this project that are not used so want cleanup to occur during development.  Ideally you modify files rather than create new files.  If you create new files to replace an old one that is no longer needed, then either delete the old file or move it to a trash folder.  If something was just temporary then delete it.  If it is a solution that we might want to use later then mvoe it to the trash.  
+ 
+10. For each project, all data will be kept in Snowflake in a single database and single schema for simplicity
+
+11.  If you are facing problems getting some code to work or are dealing with a very new product, it is best to look at the latest documentation.  You can use the context7 mcp to verify documentation.  

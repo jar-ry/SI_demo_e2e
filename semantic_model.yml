@@ -1,0 +1,816 @@
+name: STORE_PERFORMANCE_CORTEX_ANALYST
+tables:
+  - name: CORTEX_EVENTS_DATA
+    description: This view provides a curated dataset of significant events, excluding normal days, from 2024 onwards, categorized by type, with key attributes such as date, location, impact radius, severity score, and time-based dimensions for analysis and reporting purposes.
+    base_table:
+      database: RETAIL_SI_DEMO_V2
+      schema: RETAIL_SI_DEMO_V2
+      table: CORTEX_EVENTS_DATA
+    dimensions:
+      - name: ANALYSIS_TYPE
+        description: The type of analysis performed on the events data, indicating that the data is related to events.
+        expr: ANALYSIS_TYPE
+        data_type: VARCHAR(11)
+        sample_values:
+          - Events Data
+      - name: EVENT_CATEGORY
+        description: The type of event that triggered the data collection, such as a cultural event, natural disaster, or public holiday.
+        expr: EVENT_CATEGORY
+        data_type: VARCHAR(20)
+        sample_values:
+          - Cultural Event
+          - Natural Disaster
+          - Public Holiday
+      - name: EVENT_DESCRIPTION
+        description: A description of the event that occurred, such as a public holiday, severe weather, or local festival, which may impact store operations or customer traffic.
+        expr: EVENT_DESCRIPTION
+        data_type: VARCHAR(200)
+        sample_values:
+          - Public holiday affecting store hours
+          - Category 3 Cyclone with severe weather conditions
+          - Local festival increasing foot traffic
+      - name: EVENT_TYPE
+        description: The type of event that triggered a significant impact on business operations or customer behavior, such as a festival, public holiday, or natural disaster.
+        expr: EVENT_TYPE
+        data_type: VARCHAR(50)
+        sample_values:
+          - Festival
+          - Public Holiday
+          - Cyclone Alfred
+      - name: POSTCODE
+        description: The geographic location of the event, represented by a four-digit postal code.
+        expr: POSTCODE
+        data_type: VARCHAR(4)
+        sample_values:
+          - '3056'
+          - '2003'
+          - '2000'
+    time_dimensions:
+      - name: EVENT_DATE
+        description: Date on which the event occurred.
+        expr: EVENT_DATE
+        data_type: DATE
+        sample_values:
+          - '2024-01-21'
+          - '2024-02-21'
+          - '2024-02-24'
+    facts:
+      - name: IMPACT_RADIUS_KM
+        description: The estimated radius of the impact zone in kilometers, representing the area affected by a significant event.
+        expr: IMPACT_RADIUS_KM
+        data_type: NUMBER(6,1)
+        sample_values:
+          - '75.0'
+          - '30.0'
+          - '50.0'
+      - name: MONTH
+        description: The month in which the event occurred, represented as a numerical value (1-12).
+        expr: MONTH
+        data_type: NUMBER(2,0)
+        sample_values:
+          - '2'
+          - '1'
+          - '3'
+      - name: SEVERITY_SCORE
+        description: A numerical score indicating the severity of a security event, with higher values representing more severe incidents.
+        expr: SEVERITY_SCORE
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '6'
+          - '8'
+          - '4'
+      - name: WEEK_NUMBER
+        description: The week number of the year in which the event occurred, with values ranging from 1 to 52, where 1 represents the first week of the year and 52 represents the last week of the year.
+        expr: WEEK_NUMBER
+        data_type: NUMBER(2,0)
+        sample_values:
+          - '2'
+          - '11'
+          - '1'
+      - name: YEAR
+        description: The year in which the event occurred.
+        expr: YEAR
+        data_type: NUMBER(4,0)
+        sample_values:
+          - '2024'
+          - '2025'
+    unique_keys:
+      - columns:
+          - EVENT_DATE
+          - POSTCODE
+  - name: CORTEX_EVENT_IMPACT
+    description: This view provides a daily sales analysis of stores across different events, including Cyclone Alfred and the AFL Grand Finals, allowing for comparison of sales performance during pre-event, during event, and post-event periods, as well as normal periods, with key metrics such as daily revenue, profit, profit margin, and quantity sold.
+    base_table:
+      database: RETAIL_SI_DEMO_V2
+      schema: RETAIL_SI_DEMO_V2
+      table: CORTEX_EVENT_IMPACT
+    dimensions:
+      - name: ANALYSIS_TYPE
+        description: The type of analysis performed to determine the impact of a cortex event.
+        expr: ANALYSIS_TYPE
+        data_type: VARCHAR(12)
+        sample_values:
+          - Event Impact
+      - name: DIVISION
+        description: The division or business unit within the organization that the event impact is associated with.
+        expr: DIVISION
+        data_type: VARCHAR(50)
+        sample_values:
+          - KShop
+          - Hardware Shop
+      - name: EVENT_NAME
+        description: 'The specific event being analyzed for business impact, including pre, during, and post periods. "AFL Grand Finals" (Sept 19-Oct 1, 2025 in Victoria: Pre=Sept 19-25, During=Sept 26-27 including public holiday, Post=Sept 28-Oct 1), "Cyclone Alfred" (Jan 15-Mar 15, 2024 in Queensland: Pre=Jan 15-31, During=Feb 1-15, Post=Feb 16-Mar 15), or "Normal Period" (no event). Use this with EVENT_PERIOD to compare baseline vs event impact.'
+        expr: EVENT_NAME
+        data_type: VARCHAR(16)
+        sample_values:
+          - AFL Grand Finals
+          - Cyclone Alfred
+          - Normal Period
+      - name: EVENT_PERIOD
+        description: 'The EVENT_PERIOD dimension categorizes the time frame within an event''s lifecycle. Values: "Pre-Event" (baseline period: AFL Grand Finals Sept 19-25, 2025; Cyclone Alfred Jan 15-31, 2024), "During Event" (peak impact: AFL Sept 26-27, 2025; Cyclone Feb 1-15, 2024), "Post-Event" (recovery period: AFL Sept 28-Oct 1, 2025; Cyclone Feb 16-Mar 15, 2024), "Normal Period" (outside any event window). Filter by EVENT_NAME first, then use EVENT_PERIOD to compare Pre vs During vs Post performance.'
+        expr: EVENT_PERIOD
+        data_type: VARCHAR(13)
+        sample_values:
+          - Pre-Event
+          - During Event
+          - Post-Event
+          - Normal Period
+      - name: POSTCODE
+        description: The geographic location where the event occurred, represented by a specific postal code.
+        expr: POSTCODE
+        data_type: VARCHAR(4)
+        sample_values:
+          - '4218'
+          - '3032'
+          - '3000'
+      - name: STATE_ABBR
+        description: The two-letter abbreviation for the Australian state where the event occurred.
+        expr: STATE_ABBR
+        data_type: VARCHAR(3)
+        sample_values:
+          - QLD
+          - VIC
+          - NSW
+      - name: STORE_NAME
+        description: The name of the store where the event occurred.
+        expr: STORE_NAME
+        data_type: VARCHAR(100)
+        sample_values:
+          - Melbourne West
+          - Melbourne Central
+          - Gold Coast South
+    time_dimensions:
+      - name: SALE_DATE
+        description: The date on which a sale was made.
+        expr: SALE_DATE
+        data_type: DATE
+        sample_values:
+          - '2024-08-28'
+          - '2024-06-11'
+          - '2024-11-01'
+    facts:
+      - name: DAILY_PROFIT
+        description: The total profit earned by the organization on a daily basis, calculated as the difference between total daily revenue and total daily costs.
+        expr: DAILY_PROFIT
+        data_type: NUMBER(22,2)
+        sample_values:
+          - '36990.28'
+          - '39643.16'
+          - '51119.97'
+      - name: DAILY_QUANTITY_SOLD
+        description: The total quantity of items sold on a daily basis.
+        expr: DAILY_QUANTITY_SOLD
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '85'
+          - '70'
+          - '29'
+      - name: DAILY_REVENUE
+        description: Daily revenue generated by the business, representing the total amount of money earned on a daily basis.
+        expr: DAILY_REVENUE
+        data_type: NUMBER(22,2)
+        sample_values:
+          - '103014.00'
+          - '84060.00'
+          - '89607.00'
+      - name: MONTH
+        description: The month in which the event occurred, represented as a numerical value (e.g. 1 = January, 2 = February, etc.).
+        expr: MONTH
+        data_type: NUMBER(2,0)
+        sample_values:
+          - '3'
+          - '9'
+          - '2'
+      - name: PROFIT_MARGIN_PCT
+        description: The percentage of profit margin, representing the amount of revenue that is profit, calculated as (total revenue - total cost) / total revenue, expressed as a percentage.
+        expr: PROFIT_MARGIN_PCT
+        data_type: NUMBER(34,2)
+        sample_values:
+          - '26.28'
+          - '27.40'
+          - '35.02'
+      - name: STORE_ID
+        description: Unique identifier for the store where the event occurred.
+        expr: STORE_ID
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '40'
+          - '23'
+          - '1'
+      - name: WEEK_NUMBER
+        description: The week number of the year in which the event occurred, allowing for analysis of event impact by week.
+        expr: WEEK_NUMBER
+        data_type: NUMBER(2,0)
+        sample_values:
+          - '9'
+          - '20'
+          - '11'
+      - name: YEAR
+        description: The year in which the event occurred or is scheduled to occur.
+        expr: YEAR
+        data_type: NUMBER(4,0)
+        sample_values:
+          - '2025'
+          - '2024'
+    unique_keys:
+      - columns:
+          - SALE_DATE
+          - STORE_ID
+  - name: CORTEX_STORE_PERFORMANCE
+    description: This view provides a daily snapshot of store performance metrics, including revenue, profit, profit margin, and quantity sold, aggregated by store, date, and geographic location, for all sales transactions from January 1, 2024 onwards.
+    base_table:
+      database: RETAIL_SI_DEMO_V2
+      schema: RETAIL_SI_DEMO_V2
+      table: CORTEX_STORE_PERFORMANCE
+    dimensions:
+      - name: DIVISION
+        description: The division or business unit within the company that the store belongs to.
+        expr: DIVISION
+        data_type: VARCHAR(50)
+        sample_values:
+          - KShop
+          - Hardware Shop
+      - name: POSTCODE
+        description: The geographical area where a store is located, represented by a unique postal code.
+        expr: POSTCODE
+        data_type: VARCHAR(4)
+        sample_values:
+          - '3000'
+          - '2002'
+          - '3032'
+      - name: STATE_ABBR
+        description: The two-letter abbreviation for the state in which the store is located.
+        expr: STATE_ABBR
+        data_type: VARCHAR(3)
+        sample_values:
+          - VIC
+          - NSW
+          - QLD
+      - name: STORE_NAME
+        description: The name of the store location, used to identify and analyze performance metrics by specific store.
+        expr: STORE_NAME
+        data_type: VARCHAR(100)
+        sample_values:
+          - Melbourne Central
+          - Melbourne West
+          - Gold Coast South
+    time_dimensions:
+      - name: SALE_DATE
+        description: Date on which a sale was made.
+        expr: SALE_DATE
+        data_type: DATE
+        sample_values:
+          - '2024-02-01'
+          - '2024-10-12'
+          - '2025-09-17'
+    facts:
+      - name: DAILY_PROFIT
+        description: The total profit earned by the store on a daily basis.
+        expr: DAILY_PROFIT
+        data_type: NUMBER(22,2)
+        sample_values:
+          - '35156.44'
+          - '48236.28'
+          - '35000.24'
+      - name: DAILY_QUANTITY_SOLD
+        description: The total quantity of items sold on a daily basis.
+        expr: DAILY_QUANTITY_SOLD
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '49'
+          - '21'
+          - '67'
+      - name: DAILY_REVENUE
+        description: Daily revenue generated by the store, representing the total amount of money earned from sales on a daily basis.
+        expr: DAILY_REVENUE
+        data_type: NUMBER(22,2)
+        sample_values:
+          - '142671.80'
+          - '143561.60'
+          - '86304.00'
+      - name: MONTH
+        description: The month of the year in which the store performance data was recorded, represented as a numerical value (1-12) where 1 corresponds to January and 12 corresponds to December.
+        expr: MONTH
+        data_type: NUMBER(2,0)
+        sample_values:
+          - '1'
+          - '2'
+          - '3'
+      - name: PROFIT_MARGIN_PCT
+        description: The percentage of profit made on sales after deducting the cost of goods sold, expressed as a percentage of net sales.
+        expr: PROFIT_MARGIN_PCT
+        data_type: NUMBER(34,2)
+        sample_values:
+          - '28.90'
+          - '25.86'
+          - '23.94'
+      - name: QUARTER
+        description: The quarter of the year in which the performance data was recorded, with 1 representing Q1 (January-March), 2 representing Q2 (April-June), and 3 representing Q3 (July-September) and 4 representing Q4 (October-December).
+        expr: QUARTER
+        data_type: NUMBER(2,0)
+        sample_values:
+          - '1'
+          - '3'
+          - '2'
+      - name: STORE_ID
+        description: Unique identifier for a store in the retail chain, used to track performance metrics and analyze sales data at the individual store level.
+        expr: STORE_ID
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '14'
+          - '23'
+          - '40'
+      - name: WEEK_NUMBER
+        description: The week number of the year in which the sales data was recorded, allowing for analysis of sales trends and performance over time.
+        expr: WEEK_NUMBER
+        data_type: NUMBER(2,0)
+        sample_values:
+          - '7'
+          - '9'
+          - '11'
+      - name: YEAR
+        description: The calendar year in which the performance data was recorded.
+        expr: YEAR
+        data_type: NUMBER(4,0)
+        sample_values:
+          - '2024'
+          - '2025'
+    unique_keys:
+      - columns:
+          - SALE_DATE
+          - STORE_ID
+  - name: CORTEX_PRODUCT_PERFORMANCE
+    description: This view provides daily sales performance metrics for each product, including revenue, profit, profit margin, and quantity sold, aggregated by product, store location, and date, with business-friendly category names, for sales data from January 1, 2024 onwards.
+    base_table:
+      database: RETAIL_SI_DEMO_V2
+      schema: RETAIL_SI_DEMO_V2
+      table: CORTEX_PRODUCT_PERFORMANCE
+    dimensions:
+      - name: ANALYSIS_TYPE
+        description: The type of analysis being performed to measure product performance, such as sales, revenue, or customer satisfaction.
+        expr: ANALYSIS_TYPE
+        data_type: VARCHAR(19)
+        sample_values:
+          - Product Performance
+      - name: BRAND
+        description: The brand name of the product, indicating whether it is a generic or store-brand product rather than a name-brand product.
+        expr: BRAND
+        data_type: VARCHAR(50)
+        sample_values:
+          - Generic
+      - name: BUSINESS_CATEGORY
+        description: The category of business that the product belongs to, such as Home & Living, Hardware & Tools, or Food & Beverages, which helps in analyzing product performance across different business segments.
+        expr: BUSINESS_CATEGORY
+        data_type: VARCHAR(18)
+        sample_values:
+          - Home & Living
+          - Hardware & Tools
+          - Food & Beverages
+      - name: CATEGORY
+        description: 'The category of the product, which can be one of the following: Food, Apparel, or Hardware, representing the general classification or type of product being sold.'
+        expr: CATEGORY
+        data_type: VARCHAR(50)
+        sample_values:
+          - Food
+          - Apparel
+          - Hardware
+      - name: DIVISION
+        description: The division or business unit within the company that the product is associated with.
+        expr: DIVISION
+        data_type: VARCHAR(50)
+        sample_values:
+          - KShop
+          - Hardware Shop
+      - name: PRODUCT_NAME
+        description: The category or classification of the product being measured for performance.
+        expr: PRODUCT_NAME
+        data_type: VARCHAR(100)
+        sample_values:
+          - Beverages
+          - Frozen
+          - Protective Materials
+      - name: STATE_ABBR
+        description: The two-letter abbreviation for the state in which the product was sold, such as VIC for Victoria, NSW for New South Wales, and QLD for Queensland.
+        expr: STATE_ABBR
+        data_type: VARCHAR(3)
+        sample_values:
+          - VIC
+          - NSW
+          - QLD
+    time_dimensions:
+      - name: SALE_DATE
+        description: Date on which the product was sold.
+        expr: SALE_DATE
+        data_type: DATE
+        sample_values:
+          - '2024-03-14'
+          - '2024-02-03'
+          - '2024-11-08'
+    facts:
+      - name: DAILY_PROFIT
+        description: Daily profit represents the total earnings generated by a product on a daily basis, calculated as the difference between the product's daily revenue and its daily costs, providing insight into the product's financial performance and contribution to the company's overall profitability.
+        expr: DAILY_PROFIT
+        data_type: NUMBER(22,2)
+        sample_values:
+          - '9977.85'
+          - '9657.87'
+          - '11193.73'
+      - name: DAILY_QUANTITY_SOLD
+        description: The total quantity of a product sold on a daily basis.
+        expr: DAILY_QUANTITY_SOLD
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '7'
+          - '6'
+          - '8'
+      - name: DAILY_REVENUE
+        description: Daily revenue generated by the product, representing the total amount of money earned from sales on a daily basis.
+        expr: DAILY_REVENUE
+        data_type: NUMBER(22,2)
+        sample_values:
+          - '18265.20'
+          - '23576.40'
+          - '63877.60'
+      - name: MONTH
+        description: The month in which the product performance data was recorded, represented as a numerical value (1-12) corresponding to the months of the year (January-December).
+        expr: MONTH
+        data_type: NUMBER(2,0)
+        sample_values:
+          - '10'
+          - '11'
+          - '2'
+      - name: PRODUCT_ID
+        description: Unique identifier for a product in the Cortex system.
+        expr: PRODUCT_ID
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '19'
+          - '20'
+          - '18'
+      - name: PROFIT_MARGIN_PCT
+        description: The percentage of profit margin, representing the amount of revenue that is profit, calculated as (Revenue - Cost of Goods Sold) / Revenue, expressed as a percentage.
+        expr: PROFIT_MARGIN_PCT
+        data_type: NUMBER(34,2)
+        sample_values:
+          - '29.73'
+          - '41.07'
+          - '31.06'
+      - name: QUARTER
+        description: The quarter of the year in which the product performance data was recorded, with 1 representing Q1 (January-March), 2 representing Q2 (April-June), 3 representing Q3 (July-September), and 4 representing Q4 (October-December).
+        expr: QUARTER
+        data_type: NUMBER(2,0)
+        sample_values:
+          - '3'
+          - '1'
+          - '4'
+      - name: YEAR
+        description: The calendar year in which the product performance metrics were recorded.
+        expr: YEAR
+        data_type: NUMBER(4,0)
+        sample_values:
+          - '2024'
+          - '2025'
+    unique_keys:
+      - columns:
+          - SALE_DATE
+          - PRODUCT_ID
+          - STATE_ABBR
+          - DIVISION
+  - name: CORTEX_WEATHER_DATA
+    description: This view provides a curated dataset of weather data for analysis, including temperature, wind speed, precipitation, and weather conditions, categorized by severity and weather type, for dates from 2024 onwards, with extracted year, month, and week number for easier trend analysis and visualization.
+    base_table:
+      database: RETAIL_SI_DEMO_V2
+      schema: RETAIL_SI_DEMO_V2
+      table: CORTEX_WEATHER_DATA
+    dimensions:
+      - name: ANALYSIS_TYPE
+        description: Type of weather analysis performed on the data, such as forecast, historical, or real-time data.
+        expr: ANALYSIS_TYPE
+        data_type: VARCHAR(12)
+        sample_values:
+          - Weather Data
+      - name: POSTCODE
+        description: A unique identifier for a geographic area, used to categorize weather data by postal region.
+        expr: POSTCODE
+        data_type: VARCHAR(4)
+        sample_values:
+          - '4001'
+          - '3056'
+          - '2001'
+      - name: SEVERITY_LEVEL
+        description: A categorical dimension indicating the severity level of weather conditions, with possible values being High (most severe), Medium (moderate), and Low (least severe).
+        expr: SEVERITY_LEVEL
+        data_type: VARCHAR(20)
+        sample_values:
+          - High
+          - Low
+          - Medium
+      - name: WEATHER_CATEGORY
+        description: Categorization of weather conditions, indicating the general state of the weather, such as clear, moderate, or wet, to provide context for analysis and decision-making.
+        expr: WEATHER_CATEGORY
+        data_type: VARCHAR(16)
+        sample_values:
+          - Moderate Weather
+          - Clear Weather
+          - Wet Weather
+      - name: WEATHER_CONDITION
+        description: The current weather condition at the time of data collection, categorized as Partly Cloudy, Sunny, or Rain.
+        expr: WEATHER_CONDITION
+        data_type: VARCHAR(50)
+        sample_values:
+          - Partly Cloudy
+          - Sunny
+          - Rain
+    time_dimensions:
+      - name: WEATHER_DATE
+        description: Date of weather observation.
+        expr: WEATHER_DATE
+        data_type: DATE
+        sample_values:
+          - '2024-01-12'
+          - '2024-01-01'
+          - '2024-01-03'
+    facts:
+      - name: MONTH
+        description: The month of the year in which the weather data was recorded, represented as a numerical value (1-12) where 1 corresponds to January and 12 corresponds to December.
+        expr: MONTH
+        data_type: NUMBER(2,0)
+        sample_values:
+          - '1'
+          - '2'
+          - '3'
+      - name: PRECIPITATION_MM
+        description: The total amount of precipitation (rain, snow, sleet, or hail) that fell in a given area, measured in millimeters.
+        expr: PRECIPITATION_MM
+        data_type: NUMBER(6,1)
+        sample_values:
+          - '10.0'
+          - '80.0'
+          - '0.0'
+      - name: TEMPERATURE_CELSIUS
+        description: The temperature reading in degrees Celsius, representing the air temperature measured at the time of data collection.
+        expr: TEMPERATURE_CELSIUS
+        data_type: NUMBER(6,1)
+        sample_values:
+          - '15.0'
+          - '35.0'
+          - '25.0'
+      - name: WEEK_NUMBER
+        description: The week number of the year in which the weather data was recorded, ranging from 1 (first week of the year) to 52 (last week of the year).
+        expr: WEEK_NUMBER
+        data_type: NUMBER(2,0)
+        sample_values:
+          - '1'
+          - '2'
+          - '3'
+      - name: WIND_SPEED_KMH
+        description: The speed of the wind in kilometers per hour at the time of weather data collection.
+        expr: WIND_SPEED_KMH
+        data_type: NUMBER(6,1)
+        sample_values:
+          - '20.0'
+          - '100.0'
+          - '5.0'
+      - name: YEAR
+        description: The year in which the weather data was recorded.
+        expr: YEAR
+        data_type: NUMBER(4,0)
+        sample_values:
+          - '2024'
+          - '2025'
+    unique_keys:
+      - columns:
+          - WEATHER_DATE
+          - POSTCODE
+relationships:
+  - name: EVENT_IMPACT_TO_EVENTS
+    left_table: CORTEX_EVENT_IMPACT
+    right_table: CORTEX_EVENTS_DATA
+    join_type: left_outer
+    relationship_columns:
+      - left_column: SALE_DATE
+        right_column: EVENT_DATE
+      - left_column: POSTCODE
+        right_column: POSTCODE
+  - name: EVENT_IMPACT_TO_WEATHER
+    left_table: CORTEX_EVENT_IMPACT
+    right_table: CORTEX_WEATHER_DATA
+    join_type: left_outer
+    relationship_columns:
+      - left_column: SALE_DATE
+        right_column: WEATHER_DATE
+      - left_column: POSTCODE
+        right_column: POSTCODE
+  - name: STORE_PERFORMANCE_TO_EVENTS
+    left_table: CORTEX_STORE_PERFORMANCE
+    right_table: CORTEX_EVENTS_DATA
+    join_type: left_outer
+    relationship_columns:
+      - left_column: SALE_DATE
+        right_column: EVENT_DATE
+      - left_column: POSTCODE
+        right_column: POSTCODE
+  - name: STORE_PERFORMANCE_TO_WEATHER
+    left_table: CORTEX_STORE_PERFORMANCE
+    right_table: CORTEX_WEATHER_DATA
+    join_type: left_outer
+    relationship_columns:
+      - left_column: SALE_DATE
+        right_column: WEATHER_DATE
+      - left_column: POSTCODE
+        right_column: POSTCODE
+verified_queries:
+  - name: Show 2 year revenue performance across states
+    question: Show 2 year revenue performance across states
+    sql: |-
+      WITH __cortex_store_performance AS (
+        SELECT
+          state_abbr,
+          sale_date,
+          daily_revenue
+        FROM retail_si_demo_v2.retail_si_demo_v2.cortex_store_performance
+      ), monthly_revenue AS (
+        SELECT
+          state_abbr,
+          DATE_TRUNC('MONTH', sale_date) AS month,
+          SUM(daily_revenue) AS monthly_revenue
+        FROM __cortex_store_performance
+        WHERE
+          sale_date >= '2024-01-01' AND sale_date <= '2025-09-30'
+        GROUP BY
+          state_abbr,
+          DATE_TRUNC('MONTH', sale_date)
+      )
+      SELECT
+        state_abbr,
+        month,
+        monthly_revenue,
+        (
+          SELECT
+            COUNT(DISTINCT DATE_TRUNC('MONTH', sale_date))
+          FROM __cortex_store_performance
+          WHERE
+            sale_date >= '2024-01-01' AND sale_date <= '2025-09-30'
+        ) AS distinct_months,
+        (
+          SELECT
+            COUNT(DISTINCT state_abbr)
+          FROM __cortex_store_performance
+          WHERE
+            sale_date >= '2024-01-01' AND sale_date <= '2025-09-30'
+        ) AS distinct_states,
+        (
+          SELECT
+            MIN(monthly_rev)
+          FROM (
+            SELECT
+              SUM(daily_revenue) AS monthly_rev
+            FROM __cortex_store_performance
+            WHERE
+              sale_date >= '2024-01-01' AND sale_date <= '2025-09-30'
+            GROUP BY
+              state_abbr,
+              DATE_TRUNC('MONTH', sale_date)
+          )
+        ) AS min_monthly_revenue,
+        (
+          SELECT
+            MAX(monthly_rev)
+          FROM (
+            SELECT
+              SUM(daily_revenue) AS monthly_rev
+            FROM __cortex_store_performance
+            WHERE
+              sale_date >= '2024-01-01' AND sale_date <= '2025-09-30'
+            GROUP BY
+              state_abbr,
+              DATE_TRUNC('MONTH', sale_date)
+          )
+        ) AS max_monthly_revenue,
+        (
+          SELECT
+            AVG(monthly_rev)
+          FROM (
+            SELECT
+              SUM(daily_revenue) AS monthly_rev
+            FROM __cortex_store_performance
+            WHERE
+              sale_date >= '2024-01-01' AND sale_date <= '2025-09-30'
+            GROUP BY
+              state_abbr,
+              DATE_TRUNC('MONTH', sale_date)
+          )
+        ) AS avg_monthly_revenue
+      FROM monthly_revenue
+      ORDER BY
+        state_abbr,
+        month DESC NULLS LAST
+       -- Generated by Cortex Analyst
+      ;
+    use_as_onboarding_question: false
+    verified_by: Jarry Chen
+    verified_at: 1760506541
+  - name: |+
+      How did the stores perform during the recent Cyclone Alfred?
+
+
+
+    question: |+
+      How did the stores perform during the recent Cyclone Alfred?
+
+
+
+    sql: |-
+      WITH __cortex_event_impact AS (
+        SELECT
+          event_name,
+          event_period,
+          state_abbr,
+          store_name,
+          sale_date,
+          daily_revenue
+        FROM
+          retail_si_demo_v2.retail_si_demo_v2.cortex_event_impact
+      ),
+      afl_data AS (
+        SELECT
+          ei.event_period,
+          ei.state_abbr,
+          ei.daily_revenue,
+          ei.store_name
+        FROM
+          __cortex_event_impact AS ei
+        WHERE
+          ei.event_name = 'Cyclone Alfred'
+      ),
+      normal_data AS (
+        SELECT
+          'Normal Period' AS event_period,
+          ei.state_abbr,
+          ei.daily_revenue,
+          ei.store_name
+        FROM
+          __cortex_event_impact AS ei
+        WHERE
+          ei.event_name = 'Normal Period'
+          AND ei.sale_date >= '2024-01-01'
+          AND ei.sale_date <= '2025-09-30'
+      ),
+      combined_data AS (
+        SELECT
+          *
+        FROM
+          afl_data
+        UNION ALL
+        SELECT
+          *
+        FROM
+          normal_data
+      )
+      SELECT
+        cd.event_period,
+        cd.state_abbr,
+        SUM(cd.daily_revenue) AS total_revenue,
+        COUNT(*) AS total_records,
+        COUNT(DISTINCT cd.store_name) AS distinct_stores,
+        COUNT(DISTINCT cd.state_abbr) AS distinct_states,
+        MIN(cd.daily_revenue) AS min_daily_revenue,
+        MAX(cd.daily_revenue) AS max_daily_revenue,
+        AVG(cd.daily_revenue) AS avg_daily_revenue
+      FROM
+        combined_data AS cd
+      GROUP BY
+        cd.event_period,
+        cd.state_abbr
+      ORDER BY
+        cd.state_abbr,
+        CASE
+          WHEN cd.event_period = 'Normal Period' THEN 1
+          WHEN cd.event_period = 'Pre-Event' THEN 2
+          WHEN cd.event_period = 'During Event' THEN 3
+          WHEN cd.event_period = 'Post-Event' THEN 4
+        END -- Generated by Cortex Analyst
+      ;
+    use_as_onboarding_question: false
+    verified_by: Jarry Chen
+    verified_at: 1760520972
