@@ -27,38 +27,83 @@ This project demonstrates a comprehensive retail store performance monitoring sy
 
 ## Files
 
-1. **`create_demo_data.sql`**: Main script that creates all tables and populates them with realistic data
-2. **`demo_queries.sql`**: Sample queries demonstrating both use cases
-3. **`README.md`**: This documentation file
+### SQL Setup Scripts (run in order)
+1. **`sql_set_up_scripts/create_demo_data_v2.sql`**: Creates the Retail_SI_Demo_v2 database and populates all tables with realistic data
+2. **`sql_set_up_scripts/cortex_analyst_semantic_objects_v2.sql`**: Sets up the semantic model structure for Cortex Analyst
+3. **`sql_set_up_scripts/email_tool.sql`**: Creates the email functionality for the agent
+4. **`sql_set_up_scripts/ml_forecast_tool.sql`**: Creates the ML forecasting functionality for the agent
+
+### Configuration Files
+- **`agent_configs/semantic_model.yml`**: Semantic model configuration
+- **`agent_configs/agent.yml`**: Agent orchestrator and response prompts
+- **`agent_configs/cortex_analyst_tooL_description.yml`**: Cortex Analyst tool description
+- **`agent_configs/email_tool_description.yml`**: Email tool description
+- **`agent_configs/forecast_tool_description.yml`**: Forecast tool description
+
+### Documentation
+- **`README.md`**: This documentation file
+- **`CORTEX_ANALYST_GUIDE.md`**: Guide for using Cortex Analyst with natural language queries
 
 ## Getting Started
 
 ### Prerequisites
 - Snowflake account with appropriate permissions
 - Access to create databases and schemas
+- Access to create Cortex Analyst semantic models and agents
 
 ### Setup Instructions
 
-1. **Run the main data creation script**:
+**IMPORTANT**: Run the SQL setup scripts in the following order:
+
+1. **Create demo data**:
    ```sql
-   -- Execute the entire create_demo_data.sql script
-   -- This will create the Retail_SI_Demo database and populate all tables
+   -- Execute sql_set_up_scripts/create_demo_data_v2.sql
+   -- This will create the Retail_SI_Demo_v2 database and populate all tables
    ```
 
-2. **Verify data creation**:
+2. **Create Cortex Analyst semantic objects**:
+   ```sql
+   -- Execute sql_set_up_scripts/cortex_analyst_semantic_objects_v2.sql
+   -- This sets up the semantic model structure for Cortex Analyst
+   ```
+
+3. **Set up email tool**:
+   ```sql
+   -- Execute sql_set_up_scripts/email_tool.sql
+   -- This creates the email functionality for the agent
+   ```
+
+4. **Set up forecast tool**:
+   ```sql
+   -- Execute sql_set_up_scripts/ml_forecast_tool.sql
+   -- This creates the ML forecasting functionality for the agent
+   ```
+
+5. **Configure semantic model and agents**:
+   - Use the configuration files in the `agent_configs/` folder:
+     - `semantic_model.yml` - Configure the semantic model
+     - `agent.yml` - Configure the agent orchestrator and response prompts
+     - `cortex_analyst_tooL_description.yml` - Cortex Analyst tool description
+     - `email_tool_description.yml` - Email tool description
+     - `forecast_tool_description.yml` - Forecast tool description
+
+6. **Verify setup**:
    ```sql
    -- Check that all tables were created and populated
-   USE DATABASE Retail_SI_Demo;
-   USE SCHEMA Retail_SI_Demo;
+   USE DATABASE Retail_SI_Demo_v2;
+   USE SCHEMA Retail_SI_Demo_v2;
    
-   -- Run the validation queries at the end of create_demo_data.sql
+   -- Verify semantic objects and tools are created
+   -- Check that Cortex views are available:
+   SELECT * FROM cortex_store_performance LIMIT 10;
+   SELECT * FROM cortex_event_impact LIMIT 10;
+   SELECT * FROM cortex_pareto_analysis LIMIT 10;
    ```
 
-3. **Run demo queries**:
-   ```sql
-   -- Execute queries from demo_queries.sql to see the analysis
-   -- Start with the basic performance queries, then move to cyclone impact
-   ```
+7. **Test with Cortex Analyst**:
+   - Use natural language queries through Cortex Analyst
+   - See `CORTEX_ANALYST_GUIDE.md` for example queries and best practices
+   - Try queries like "Show me store performance by state" or "Compare pre vs during cyclone performance"
 
 ## Key Features
 
@@ -86,61 +131,6 @@ This project demonstrates a comprehensive retail store performance monitoring sy
 - **Home**: Furniture, decor, kitchenware
 - **Electronics**: Phones, laptops, cameras
 - **Food**: Canned goods, snacks, beverages
-
-## Sample Analysis Queries
-
-### Store Performance Analysis
-```sql
--- State-by-state performance comparison
-SELECT 
-    state_abbr,
-    division,
-    COUNT(*) as store_count,
-    SUM(total_revenue) as state_revenue,
-    SUM(total_profit) as state_profit
-FROM V_STORE_PERFORMANCE
-GROUP BY state_abbr, division;
-```
-
-### Pareto Analysis
-```sql
--- 80/20 analysis by state
-SELECT 
-    state_abbr,
-    store_id,
-    total_profit,
-    cumulative_percentage
-FROM (
-    SELECT 
-        state_abbr,
-        store_id,
-        total_profit,
-        SUM(total_profit) OVER (PARTITION BY state_abbr ORDER BY total_profit DESC) as running_total,
-        SUM(total_profit) OVER (PARTITION BY state_abbr) as state_total,
-        ROUND(SUM(total_profit) OVER (PARTITION BY state_abbr ORDER BY total_profit DESC) / 
-              SUM(total_profit) OVER (PARTITION BY state_abbr) * 100, 2) as cumulative_percentage
-    FROM V_STORE_PERFORMANCE
-) ranked_stores
-ORDER BY state_abbr, total_profit DESC;
-```
-
-### Cyclone Impact Analysis
-```sql
--- Pre, During, Post cyclone analysis
-SELECT 
-    period,
-    COUNT(DISTINCT store_id) as affected_stores,
-    SUM(daily_revenue) as total_revenue,
-    SUM(daily_profit) as total_profit
-FROM V_CYCLONE_IMPACT
-GROUP BY period
-ORDER BY 
-    CASE period
-        WHEN 'Pre-Cyclone' THEN 1
-        WHEN 'During Cyclone' THEN 2
-        WHEN 'Post-Cyclone' THEN 3
-    END;
-```
 
 ## Data Characteristics
 
