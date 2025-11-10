@@ -153,46 +153,46 @@ CREATE OR REPLACE TABLE EVENTS_DATA (
 -- Insert stores across different states with realistic data
 INSERT INTO DIM_STORE VALUES
 -- Queensland stores (for Cyclone Alfred impact)
-(1, 'KShop', 'QLD', '4000', -27.4698, 153.0251, 'Brisbane Central'),
-(2, 'Hardware Shop', 'QLD', '4000', -27.4698, 153.0251, 'Brisbane Central'),
-(3, 'KShop', 'QLD', '4217', -27.9556, 153.3844, 'Gold Coast'),
-(4, 'Hardware Shop', 'QLD', '4217', -27.9556, 153.3844, 'Gold Coast'),
-(5, 'KShop', 'QLD', '4870', -16.9186, 145.7781, 'Cairns'),
-(6, 'Hardware Shop', 'QLD', '4870', -16.9186, 145.7781, 'Cairns'),
-(21, 'KShop', 'QLD', '4001', -27.4698, 153.0251, 'Brisbane North'),
-(22, 'Hardware Shop', 'QLD', '4001', -27.4698, 153.0251, 'Brisbane North'),
-(23, 'KShop', 'QLD', '4218', -27.9556, 153.3844, 'Gold Coast South'),
-(24, 'Hardware Shop', 'QLD', '4218', -27.9556, 153.3844, 'Gold Coast South'),
-(25, 'KShop', 'QLD', '4871', -16.9186, 145.7781, 'Cairns North'),
-(26, 'Hardware Shop', 'QLD', '4871', -16.9186, 145.7781, 'Cairns North'),
+(1, 'Kmart', 'QLD', '4000', -27.4698, 153.0251, 'Brisbane Central'),
+(2, 'Bunnings', 'QLD', '4000', -27.4698, 153.0251, 'Brisbane Central'),
+(3, 'Kmart', 'QLD', '4217', -27.9556, 153.3844, 'Gold Coast'),
+(4, 'Bunnings', 'QLD', '4217', -27.9556, 153.3844, 'Gold Coast'),
+(5, 'Kmart', 'QLD', '4870', -16.9186, 145.7781, 'Cairns'),
+(6, 'Bunnings', 'QLD', '4870', -16.9186, 145.7781, 'Cairns'),
+(21, 'Kmart', 'QLD', '4001', -27.4698, 153.0251, 'Brisbane North'),
+(22, 'Bunnings', 'QLD', '4001', -27.4698, 153.0251, 'Brisbane North'),
+(23, 'Kmart', 'QLD', '4218', -27.9556, 153.3844, 'Gold Coast South'),
+(24, 'Bunnings', 'QLD', '4218', -27.9556, 153.3844, 'Gold Coast South'),
+(25, 'Kmart', 'QLD', '4871', -16.9186, 145.7781, 'Cairns North'),
+(26, 'Bunnings', 'QLD', '4871', -16.9186, 145.7781, 'Cairns North'),
 
 -- New South Wales stores (for comparison)
-(7, 'KShop', 'NSW', '2000', -33.8688, 151.2093, 'Sydney Central'),
-(8, 'Hardware Shop', 'NSW', '2000', -33.8688, 151.2093, 'Sydney Central'),
-(9, 'KShop', 'NSW', '2001', -33.8688, 151.2093, 'Sydney North'),
-(10, 'Hardware Shop', 'NSW', '2001', -33.8688, 151.2093, 'Sydney North'),
-(11, 'KShop', 'NSW', '2002', -33.8688, 151.2093, 'Sydney South'),
-(12, 'Hardware Shop', 'NSW', '2002', -33.8688, 151.2093, 'Sydney South'),
-(13, 'KShop', 'NSW', '2003', -33.8688, 151.2093, 'Sydney East'),
-(14, 'Hardware Shop', 'NSW', '2003', -33.8688, 151.2093, 'Sydney East'),
-(15, 'KShop', 'NSW', '2004', -33.8688, 151.2093, 'Sydney West'),
-(16, 'Hardware Shop', 'NSW', '2004', -33.8688, 151.2093, 'Sydney West'),
-(35, 'KShop', 'NSW', '2005', -33.8688, 151.2093, 'Sydney CBD'),
-(36, 'Hardware Shop', 'NSW', '2005', -33.8688, 151.2093, 'Sydney CBD'),
+(7, 'Kmart', 'NSW', '2000', -33.8688, 151.2093, 'Sydney Central'),
+(8, 'Bunnings', 'NSW', '2000', -33.8688, 151.2093, 'Sydney Central'),
+(9, 'Kmart', 'NSW', '2001', -33.8688, 151.2093, 'Sydney North'),
+(10, 'Bunnings', 'NSW', '2001', -33.8688, 151.2093, 'Sydney North'),
+(11, 'Kmart', 'NSW', '2002', -33.8688, 151.2093, 'Sydney South'),
+(12, 'Bunnings', 'NSW', '2002', -33.8688, 151.2093, 'Sydney South'),
+(13, 'Kmart', 'NSW', '2003', -33.8688, 151.2093, 'Sydney East'),
+(14, 'Bunnings', 'NSW', '2003', -33.8688, 151.2093, 'Sydney East'),
+(15, 'Kmart', 'NSW', '2004', -33.8688, 151.2093, 'Sydney West'),
+(16, 'Bunnings', 'NSW', '2004', -33.8688, 151.2093, 'Sydney West'),
+(35, 'Kmart', 'NSW', '2005', -33.8688, 151.2093, 'Sydney CBD'),
+(36, 'Bunnings', 'NSW', '2005', -33.8688, 151.2093, 'Sydney CBD'),
 
 -- Victoria stores
-(17, 'KShop', 'VIC', '3000', -37.8136, 144.9631, 'Melbourne Central'),
-(18, 'Hardware Shop', 'VIC', '3000', -37.8136, 144.9631, 'Melbourne Central'),
-(19, 'KShop', 'VIC', '3056', -37.8136, 144.9631, 'Melbourne North'),
-(20, 'Hardware Shop', 'VIC', '3056', -37.8136, 144.9631, 'Melbourne North'),
-(21, 'KShop', 'VIC', '3002', -37.8136, 144.9631, 'Melbourne South'),
-(22, 'Hardware Shop', 'VIC', '3002', -37.8136, 144.9631, 'Melbourne South'),
-(37, 'KShop', 'VIC', '3103', -37.8136, 144.9631, 'Melbourne East'),
-(38, 'Hardware Shop', 'VIC', '3103', -37.8136, 144.9631, 'Melbourne East'),
-(39, 'KShop', 'VIC', '3032', -37.8136, 144.9631, 'Melbourne West'),
-(40, 'Hardware Shop', 'VIC', '3032', -37.8136, 144.9631, 'Melbourne West'),
-(41, 'KShop', 'VIC', '3005', -37.8136, 144.9631, 'Melbourne CBD'),
-(42, 'Hardware Shop', 'VIC', '3005', -37.8136, 144.9631, 'Melbourne CBD');
+(17, 'Kmart', 'VIC', '3000', -37.8136, 144.9631, 'Melbourne Central'),
+(18, 'Bunnings', 'VIC', '3000', -37.8136, 144.9631, 'Melbourne Central'),
+(19, 'Kmart', 'VIC', '3056', -37.8136, 144.9631, 'Melbourne North'),
+(20, 'Bunnings', 'VIC', '3056', -37.8136, 144.9631, 'Melbourne North'),
+(21, 'Kmart', 'VIC', '3002', -37.8136, 144.9631, 'Melbourne South'),
+(22, 'Bunnings', 'VIC', '3002', -37.8136, 144.9631, 'Melbourne South'),
+(37, 'Kmart', 'VIC', '3103', -37.8136, 144.9631, 'Melbourne East'),
+(38, 'Bunnings', 'VIC', '3103', -37.8136, 144.9631, 'Melbourne East'),
+(39, 'Kmart', 'VIC', '3032', -37.8136, 144.9631, 'Melbourne West'),
+(40, 'Bunnings', 'VIC', '3032', -37.8136, 144.9631, 'Melbourne West'),
+(41, 'Kmart', 'VIC', '3005', -37.8136, 144.9631, 'Melbourne CBD'),
+(42, 'Bunnings', 'VIC', '3005', -37.8136, 144.9631, 'Melbourne CBD');
 
 -- Insert product categories
 INSERT INTO DIM_PRODUCT VALUES
@@ -249,28 +249,28 @@ base_sales AS (
         spc.postcode,
         -- Base revenue with stability adjustment: Consistent baseline during normal periods, natural variance during events
         (CASE 
-            WHEN spc.division = 'Hardware Shop' AND spc.product_id <= 4 THEN 
+            WHEN spc.division = 'Bunnings' AND spc.product_id <= 4 THEN 
                 -- Fixed base + (variance * stability_factor)
                 10000 + (UNIFORM(0, 1, RANDOM()) * 10000 * 
                     CASE WHEN (ds.sale_date BETWEEN '2024-01-15' AND '2024-03-15') 
                             OR (ds.sale_date BETWEEN '2025-09-19' AND '2025-10-01') 
                          THEN 1.0 ELSE 0.20 END)  -- 80% less variance in normal periods
-            WHEN spc.division = 'KShop' AND spc.product_id > 4 AND spc.product_id <= 8 THEN 
+            WHEN spc.division = 'Kmart' AND spc.product_id > 4 AND spc.product_id <= 8 THEN 
                 5500 + (UNIFORM(0, 1, RANDOM()) * 5000 * 
                     CASE WHEN (ds.sale_date BETWEEN '2024-01-15' AND '2024-03-15') 
                             OR (ds.sale_date BETWEEN '2025-09-19' AND '2025-10-01') 
                          THEN 1.0 ELSE 0.20 END)
-            WHEN spc.division = 'KShop' AND spc.product_id > 8 AND spc.product_id <= 12 THEN 
+            WHEN spc.division = 'Kmart' AND spc.product_id > 8 AND spc.product_id <= 12 THEN 
                 7000 + (UNIFORM(0, 1, RANDOM()) * 6000 * 
                     CASE WHEN (ds.sale_date BETWEEN '2024-01-15' AND '2024-03-15') 
                             OR (ds.sale_date BETWEEN '2025-09-19' AND '2025-10-01') 
                          THEN 1.0 ELSE 0.20 END)
-            WHEN spc.division = 'KShop' AND spc.product_id > 12 AND spc.product_id <= 16 THEN 
+            WHEN spc.division = 'Kmart' AND spc.product_id > 12 AND spc.product_id <= 16 THEN 
                 20000 + (UNIFORM(0, 1, RANDOM()) * 20000 * 
                     CASE WHEN (ds.sale_date BETWEEN '2024-01-15' AND '2024-03-15') 
                             OR (ds.sale_date BETWEEN '2025-09-19' AND '2025-10-01') 
                          THEN 1.0 ELSE 0.20 END)
-            WHEN spc.division = 'KShop' AND spc.product_id > 16 THEN 
+            WHEN spc.division = 'Kmart' AND spc.product_id > 16 THEN 
                 3500 + (UNIFORM(0, 1, RANDOM()) * 3000 * 
                     CASE WHEN (ds.sale_date BETWEEN '2024-01-15' AND '2024-03-15') 
                             OR (ds.sale_date BETWEEN '2025-09-19' AND '2025-10-01') 

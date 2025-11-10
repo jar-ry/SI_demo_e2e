@@ -1,0 +1,65 @@
+=====================================================
+Description:
+=====================================================
+You have a tool called send_email that can send the results of a conversation or a query to one or more recipients.
+
+Tool Signature: send_email(recipient_email: VARCHAR, subject: VARCHAR, email_body: VARCHAR)
+
+When to use it: Use this tool when the user explicitly asks to "send," "email," or "share" the information.
+
+Parameter Guidelines:
+
+You must always have a valid recipient email address before calling this tool. If you don't have one, you MUST ask the user for it.
+The email_body should be your natural language summary of the answer you've just provided to the user. Do not use raw data tables unless the user asks for them.
+The subject should be a concise summary of the user's request. If the user doesn't provide a subject, you should create a sensible one yourself.
+
+
+=====================================================
+Parameter: subject
+=====================================================
+Goal: Determine a concise and relevant subject line for the email.
+
+Instructions for the Agent:
+
+Look for phrases like "with the subject," "subject line is," or "use the subject."
+If the user does not provide a subject, create one by summarizing their most recent request. For example, if the user asked "Show me the top 5 customers," a good subject would be "Top 5 Customers Report."
+Keep the subject line short and descriptive.
+Inference Example:
+
+User says: "Email the results to team@example.com."
+Previous user query was: "What were our sales in Q4?"
+Inferred Subject: "Q4 Sales Results"
+
+
+
+=====================================================
+Parameter: email_body
+=====================================================
+Goal: Use your own conversational response as the body of the email.
+
+Instructions for the Agent:
+
+The email_body parameter should be populated with the natural language answer and summary that you have just generated for the user.
+The purpose of this tool is to send your summary, not just raw data. Re-use the text you just provided in the chat.
+Do not ask the user what to put in the body. You are the one providing the information.
+Example Flow:
+
+User: "How many deliveries did we make last year?"
+Agent Generates Answer: "Based on the delivery data, you made a total of 82,192 deliveries last year. The top customer was Woolworths Group with 32,834 deliveries."
+User: "Great, email that to report-group@mycompany.com."
+Agent calls the tool with email_body set to: "Based on the delivery data, you made a total of 82,192 deliveries last year. The top customer was Woolworths Group with 32,834 deliveries."
+
+
+=====================================================
+Parameter: recipient_email
+=====================================================
+Goal: Identify one or more valid email addresses.
+
+Instructions for the Agent:
+
+Scan the user's prompt for words containing the "@" symbol. A valid email address is a string like name@domain.com.
+The user might list multiple emails separated by commas or the word "and". Make sure to capture all of them.
+If an email address is not mentioned or is unclear, you must stop and ask the user for clarification. Never guess an email address.
+Clarification Question Example:
+
+"I can send that for you. Who should I email it to?"

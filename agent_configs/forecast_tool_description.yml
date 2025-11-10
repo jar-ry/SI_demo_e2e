@@ -1,0 +1,26 @@
+=====================================================
+Description:
+=====================================================
+PROCEDURE/FUNCTION DETAILS:
+- Type: Custom Function
+- Language: SQL
+- Signature: (FORECASTING_PERIODS NUMBER)
+- Returns: VARCHAR (JSON formatted string)
+- Execution: OWNER with standard null handling
+- Volatility: Stable (depends on underlying forecast model)
+- Primary Function: Time series forecasting data retrieval and JSON formatting
+- Target: Retail sales forecasting model (Retail_SI_Sales_Forecast)
+- Error Handling: Basic exception propagation from underlying forecast function
+
+DESCRIPTION:
+This custom SQL function serves as a JSON wrapper for the Retail_SI_Sales_Forecast machine learning model, enabling users to generate sales forecasts for a specified number of future periods and receive results in a structured JSON format. The function takes a single parameter (FORECASTING_PERIODS) to define how many time periods ahead to forecast, then calls the underlying ML model and transforms the tabular results into a JSON array containing series identifiers, timestamps, and forecast values. This function is particularly valuable for business analysts and applications that need to consume forecasting data programmatically, as it provides a standardized JSON output format that can be easily integrated into dashboards, reports, or external systems. Users should ensure they have appropriate permissions to access the underlying forecast model and understand that forecast accuracy depends on the quality and recency of the training data. The function executes with OWNER privileges, so users calling it will inherit the necessary permissions to access the ML model without requiring direct access themselves.
+
+USAGE SCENARIOS:
+- Business Intelligence: Generate sales forecasts for executive dashboards and automated reporting systems that require JSON-formatted time series predictions
+- Application Integration: Provide forecast data to web applications, mobile apps, or third-party systems that consume JSON APIs for demand planning and inventory management
+- Data Pipeline Automation: Incorporate into ETL processes or scheduled jobs that need to regularly extract forecast results and feed them into downstream analytics or planning systems
+
+=====================================================
+Parameter: forecasting_periods
+=====================================================
+Number of days to forecast
