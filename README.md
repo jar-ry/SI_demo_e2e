@@ -28,8 +28,8 @@ This project demonstrates a comprehensive retail store performance monitoring sy
 ## Files
 
 ### SQL Setup Scripts (run in order)
-1. **`sql_set_up_scripts/create_demo_data_v2.sql`**: Creates the Retail_SI_Demo_v2 database and populates all tables with realistic data
-2. **`sql_set_up_scripts/cortex_analyst_semantic_objects_v2.sql`**: Sets up the semantic model structure for Cortex Analyst
+1. **`sql_set_up_scripts/create_demo_data.sql`**: Creates the Retail_SI_Demo database and populates all tables with realistic data
+2. **`sql_set_up_scripts/cortex_analyst_semantic_objects.sql`**: Sets up the semantic model structure for Cortex Analyst
 3. **`sql_set_up_scripts/email_tool.sql`**: Creates the email functionality for the agent
 4. **`sql_set_up_scripts/ml_forecast_tool.sql`**: Creates the ML forecasting functionality for the agent
 
@@ -57,13 +57,13 @@ This project demonstrates a comprehensive retail store performance monitoring sy
 
 1. **Create demo data**:
    ```sql
-   -- Execute sql_set_up_scripts/create_demo_data_v2.sql
-   -- This will create the Retail_SI_Demo_v2 database and populate all tables
+   -- Execute sql_set_up_scripts/create_demo_data.sql
+   -- This will create the Retail_SI_Demo database and populate all tables
    ```
 
 2. **Create Cortex Analyst semantic objects**:
    ```sql
-   -- Execute sql_set_up_scripts/cortex_analyst_semantic_objects_v2.sql
+   -- Execute sql_set_up_scripts/cortex_analyst_semantic_objects.sql
    -- This sets up the semantic model structure for Cortex Analyst
    ```
 
@@ -90,8 +90,8 @@ This project demonstrates a comprehensive retail store performance monitoring sy
 6. **Verify setup**:
    ```sql
    -- Check that all tables were created and populated
-   USE DATABASE Retail_SI_Demo_v2;
-   USE SCHEMA Retail_SI_Demo_v2;
+   USE DATABASE Retail_SI_Demo;
+   USE SCHEMA Retail_SI_Demo;
    
    -- Verify semantic objects and tools are created
    -- Check that Cortex views are available:

@@ -1,5 +1,5 @@
 -- =====================================================
--- Retail Store Performance Monitoring Demo Data V2
+-- Retail Store Performance Monitoring Demo Data
 -- =====================================================
 -- This script creates and populates all tables needed for:
 -- 1. Store Performance & Pareto Analysis
@@ -12,29 +12,30 @@
 USE ROLE ACCOUNTADMIN;
 
 -- Create demo admin role first so all objects can be created under this role
-CREATE ROLE IF NOT EXISTS RETAIL_SI_DEMO_ADMIN_V2;
+CREATE OR REPLACE ROLE RETAIL_SI_DEMO_ADMIN;
 
-SELECT 'Demo admin role created successfully! Role: RETAIL_SI_DEMO_ADMIN_V2' as status;
+SELECT 'Demo admin role created successfully! Role: RETAIL_SI_DEMO_ADMIN' as status;
 
 -- Dynamically grant role 'snowflake_intelligence_admin_rl' to the current user
 DECLARE
     sql_command STRING;
 BEGIN
-    sql_command := 'GRANT ROLE RETAIL_SI_DEMO_ADMIN_V2 TO USER "' || CURRENT_USER() || '";';
+    sql_command := 'GRANT ROLE RETAIL_SI_DEMO_ADMIN TO USER "' || CURRENT_USER() || '";';
     EXECUTE IMMEDIATE sql_command;
-    RETURN 'Role RETAIL_SI_DEMO_ADMIN_V2 granted successfully to user ' || CURRENT_USER();
+    RETURN 'Role RETAIL_SI_DEMO_ADMIN granted successfully to user ' || CURRENT_USER();
 END;
 
 -- Switch to the admin role so all subsequent objects are owned by this role
+USE ROLE RETAIL_SI_DEMO_ADMIN;
 
-SELECT 'Now using RETAIL_SI_DEMO_ADMIN_V2 role - all objects will be owned by this role' as status;
+SELECT 'Now using RETAIL_SI_DEMO_ADMIN role - all objects will be owned by this role' as status;
 
 -- =====================================================
 -- STEP 2: CREATE AND CONFIGURE WAREHOUSE
 -- =====================================================
 
 -- Create demo warehouse with appropriate sizing for analytics
-CREATE WAREHOUSE IF NOT EXISTS RETAIL_SI_DEMO_WH_V2
+CREATE OR REPLACE WAREHOUSE RETAIL_SI_DEMO_WH
 WITH 
     WAREHOUSE_SIZE = 'MEDIUM'
     WAREHOUSE_TYPE = 'STANDARD'
@@ -44,12 +45,12 @@ WITH
     MAX_CLUSTER_COUNT = 2
     SCALING_POLICY = 'STANDARD'
     INITIALLY_SUSPENDED = TRUE
-    COMMENT = 'Warehouse for Retail SI Demo V2 - Store Performance & Event Impact Analysis';
+    COMMENT = 'Warehouse for Retail SI Demo - Store Performance & Event Impact Analysis';
 
 -- Grant warehouse privileges to the admin role
-GRANT USAGE ON WAREHOUSE RETAIL_SI_DEMO_WH_V2 TO ROLE RETAIL_SI_DEMO_ADMIN_V2;
-GRANT OPERATE ON WAREHOUSE RETAIL_SI_DEMO_WH_V2 TO ROLE RETAIL_SI_DEMO_ADMIN_V2;
-GRANT MODIFY ON WAREHOUSE RETAIL_SI_DEMO_WH_V2 TO ROLE RETAIL_SI_DEMO_ADMIN_V2;
+GRANT USAGE ON WAREHOUSE RETAIL_SI_DEMO_WH TO ROLE RETAIL_SI_DEMO_ADMIN;
+GRANT OPERATE ON WAREHOUSE RETAIL_SI_DEMO_WH TO ROLE RETAIL_SI_DEMO_ADMIN;
+GRANT MODIFY ON WAREHOUSE RETAIL_SI_DEMO_WH TO ROLE RETAIL_SI_DEMO_ADMIN;
 
 SELECT 'Demo warehouse created and granted to admin role!' as status;
 
@@ -58,21 +59,21 @@ SELECT 'Demo warehouse created and granted to admin role!' as status;
 -- =====================================================
 
 -- Use the demo warehouse
-USE WAREHOUSE RETAIL_SI_DEMO_WH_V2;
+USE WAREHOUSE RETAIL_SI_DEMO_WH;
 
 -- Create database and schema
-CREATE OR REPLACE DATABASE Retail_SI_Demo_v2;
-USE DATABASE Retail_SI_Demo_v2;
-CREATE OR REPLACE SCHEMA Retail_SI_Demo_v2;
-USE SCHEMA Retail_SI_Demo_v2;
+CREATE OR REPLACE DATABASE Retail_SI_Demo;
+USE DATABASE Retail_SI_Demo;
+CREATE OR REPLACE SCHEMA Retail_SI_Demo;
+USE SCHEMA Retail_SI_Demo;
 
 -- Grant database and schema privileges to the admin role
-GRANT ALL PRIVILEGES ON DATABASE Retail_SI_Demo_v2 TO ROLE RETAIL_SI_DEMO_ADMIN_V2;
-GRANT ALL PRIVILEGES ON SCHEMA Retail_SI_Demo_v2.Retail_SI_Demo_v2 TO ROLE RETAIL_SI_DEMO_ADMIN_V2;
+GRANT ALL PRIVILEGES ON DATABASE Retail_SI_Demo TO ROLE RETAIL_SI_DEMO_ADMIN;
+GRANT ALL PRIVILEGES ON SCHEMA Retail_SI_Demo.Retail_SI_Demo TO ROLE RETAIL_SI_DEMO_ADMIN;
 
 -- Grant privileges on all future tables and views
-GRANT ALL PRIVILEGES ON FUTURE TABLES IN SCHEMA Retail_SI_Demo_v2.Retail_SI_Demo_v2 TO ROLE RETAIL_SI_DEMO_ADMIN_V2;
-GRANT ALL PRIVILEGES ON FUTURE VIEWS IN SCHEMA Retail_SI_Demo_v2.Retail_SI_Demo_v2 TO ROLE RETAIL_SI_DEMO_ADMIN_V2;
+GRANT ALL PRIVILEGES ON FUTURE TABLES IN SCHEMA Retail_SI_Demo.Retail_SI_Demo TO ROLE RETAIL_SI_DEMO_ADMIN;
+GRANT ALL PRIVILEGES ON FUTURE VIEWS IN SCHEMA Retail_SI_Demo.Retail_SI_Demo TO ROLE RETAIL_SI_DEMO_ADMIN;
 
 SELECT 'Database and schema created and granted to admin role!' as status;
 
@@ -83,7 +84,7 @@ SELECT 'Database and schema created and granted to admin role!' as status;
 -- =====================================================
 -- DIMENSION TABLES
 -- =====================================================
-USE ROLE RETAIL_SI_DEMO_ADMIN_V2;
+USE ROLE RETAIL_SI_DEMO_ADMIN;
 
 -- DIM_STORE: Store information with geographic data
 CREATE OR REPLACE TABLE DIM_STORE (
@@ -93,7 +94,8 @@ CREATE OR REPLACE TABLE DIM_STORE (
     POSTCODE VARCHAR(4),
     LATITUDE DECIMAL(9, 6),
     LONGITUDE DECIMAL(9, 6),
-    STORE_NAME VARCHAR(100)
+    STORE_NAME VARCHAR(100),
+    GEOPOINT GEOGRAPHY
 );
 
 -- DIM_PRODUCT: Product categories for analysis
@@ -151,7 +153,7 @@ CREATE OR REPLACE TABLE EVENTS_DATA (
 -- =====================================================
 
 -- Insert stores across different states with realistic data
-INSERT INTO DIM_STORE VALUES
+INSERT INTO DIM_STORE (STORE_ID, DIVISION, STATE_ABBR, POSTCODE, LATITUDE, LONGITUDE, STORE_NAME) VALUES
 -- Queensland stores (for Cyclone Alfred impact)
 (1, 'Kmart', 'QLD', '4000', -27.4698, 153.0251, 'Brisbane Central'),
 (2, 'Bunnings', 'QLD', '4000', -27.4698, 153.0251, 'Brisbane Central'),
@@ -193,6 +195,9 @@ INSERT INTO DIM_STORE VALUES
 (40, 'Bunnings', 'VIC', '3032', -37.8136, 144.9631, 'Melbourne West'),
 (41, 'Kmart', 'VIC', '3005', -37.8136, 144.9631, 'Melbourne CBD'),
 (42, 'Bunnings', 'VIC', '3005', -37.8136, 144.9631, 'Melbourne CBD');
+
+-- Populate geopoint from existing latitude/longitude
+UPDATE DIM_STORE SET GEOPOINT = ST_POINT(LONGITUDE, LATITUDE);
 
 -- Insert product categories
 INSERT INTO DIM_PRODUCT VALUES
@@ -603,22 +608,22 @@ SELECT
 FROM EVENTS_DATA;
 
 -- Grant privileges on all existing tables that were just created
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA Retail_SI_Demo_v2.Retail_SI_Demo_v2 TO ROLE RETAIL_SI_DEMO_ADMIN_V2;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA Retail_SI_Demo.Retail_SI_Demo TO ROLE RETAIL_SI_DEMO_ADMIN;
 
 -- =====================================================
 -- SETUP COMPLETE - GRANT ROLE TO USER
 -- =====================================================
 
 -- Optional: Grant the role to specific users
--- GRANT ROLE RETAIL_SI_DEMO_ADMIN_V2 TO USER <your_username>;
+-- GRANT ROLE RETAIL_SI_DEMO_ADMIN TO USER <your_username>;
 
 -- Optional: Set as default role for convenience
--- ALTER USER <your_username> SET DEFAULT_ROLE = RETAIL_SI_DEMO_ADMIN_V2;
+-- ALTER USER <your_username> SET DEFAULT_ROLE = RETAIL_SI_DEMO_ADMIN;
 
 -- =====================================================
 -- END OF SCRIPT
 -- =====================================================
 
 SELECT 'Data generation completed successfully!' as status;
-SELECT 'All objects created and owned by RETAIL_SI_DEMO_ADMIN_V2 role!' as ownership_status;
+SELECT 'All objects created and owned by RETAIL_SI_DEMO_ADMIN role!' as ownership_status;
 

@@ -3,8 +3,8 @@ tables:
   - name: CORTEX_EVENTS_DATA
     description: This view provides a curated dataset of significant events, excluding normal days, from 2024 onwards, categorized by type, with key attributes such as date, location, impact radius, severity score, and time-based dimensions for analysis and reporting purposes.
     base_table:
-      database: RETAIL_SI_DEMO_V2
-      schema: RETAIL_SI_DEMO_V2
+      database: RETAIL_SI_DEMO
+      schema: RETAIL_SI_DEMO
       table: CORTEX_EVENTS_DATA
     dimensions:
       - name: ANALYSIS_TYPE
@@ -106,8 +106,8 @@ tables:
   - name: CORTEX_EVENT_IMPACT
     description: This view provides a daily sales analysis of stores across different events, including Cyclone Alfred and the AFL Grand Finals, allowing for comparison of sales performance during pre-event, during event, and post-event periods, as well as normal periods, with key metrics such as daily revenue, profit, profit margin, and quantity sold.
     base_table:
-      database: RETAIL_SI_DEMO_V2
-      schema: RETAIL_SI_DEMO_V2
+      database: RETAIL_SI_DEMO
+      schema: RETAIL_SI_DEMO
       table: CORTEX_EVENT_IMPACT
     dimensions:
       - name: ANALYSIS_TYPE
@@ -252,8 +252,8 @@ tables:
   - name: CORTEX_PRODUCT_PERFORMANCE
     description: This view provides daily sales performance metrics for each product, including revenue, profit, profit margin, and quantity sold, aggregated by product, store location, and date, with business-friendly category names, for sales data from January 1, 2024 onwards.
     base_table:
-      database: RETAIL_SI_DEMO_V2
-      schema: RETAIL_SI_DEMO_V2
+      database: RETAIL_SI_DEMO
+      schema: RETAIL_SI_DEMO
       table: CORTEX_PRODUCT_PERFORMANCE
     dimensions:
       - name: ANALYSIS_TYPE
@@ -397,8 +397,8 @@ tables:
   - name: CORTEX_STORE_PERFORMANCE
     description: This view provides a daily snapshot of store performance metrics, including revenue, profit, profit margin, and quantity sold, aggregated by store, date, and geographic location, for all sales transactions from January 1, 2024 onwards.
     base_table:
-      database: RETAIL_SI_DEMO_V2
-      schema: RETAIL_SI_DEMO_V2
+      database: RETAIL_SI_DEMO
+      schema: RETAIL_SI_DEMO
       table: CORTEX_STORE_PERFORMANCE
     dimensions:
       - name: DIVISION
@@ -529,8 +529,8 @@ tables:
   - name: CORTEX_WEATHER_DATA
     description: This view provides a curated dataset of weather data for analysis, including temperature, wind speed, precipitation, and weather conditions, categorized by severity and weather type, for dates from 2024 onwards, with extracted year, month, and week number for easier trend analysis and visualization.
     base_table:
-      database: RETAIL_SI_DEMO_V2
-      schema: RETAIL_SI_DEMO_V2
+      database: RETAIL_SI_DEMO
+      schema: RETAIL_SI_DEMO
       table: CORTEX_WEATHER_DATA
     dimensions:
       - name: ANALYSIS_TYPE

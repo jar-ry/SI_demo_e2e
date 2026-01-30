@@ -3,9 +3,9 @@
 -- SETUP
 -----------------------------------------------------------
 use role ACCOUNTADMIN;
-use warehouse RETAIL_SI_DEMO_WH_V2;
-use database RETAIL_SI_DEMO_V2;
-use schema RETAIL_SI_DEMO_V2;
+use warehouse RETAIL_SI_DEMO_WH;
+use database RETAIL_SI_DEMO;
+use schema RETAIL_SI_DEMO;
 
 -- Prepare your training data. Timestamp_ntz is a required format. Also, only include select columns.
 CREATE OR REPLACE VIEW DAILY_REVENUE_TS_v1 AS SELECT

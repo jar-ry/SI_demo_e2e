@@ -10,9 +10,9 @@
 -- Sets the current database and schema for the session.
 -- Make sure to replace 'my_database' with your database name.
 USE ROLE ACCOUNTADMIN;
-USE DATABASE RETAIL_SI_DEMO_V2;
-USE SCHEMA RETAIL_SI_DEMO_V2;
-USE WAREHOUSE RETAIL_SI_DEMO_WH_V2; 
+USE DATABASE RETAIL_SI_DEMO;
+USE SCHEMA RETAIL_SI_DEMO;
+USE WAREHOUSE RETAIL_SI_DEMO_WH; 
 
 -- Step 2: Create a Notification Integration
 -- This integration is required for Snowflake to send emails.Emails can only be those that are attached to a Snowflake account

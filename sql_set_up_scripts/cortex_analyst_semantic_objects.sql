@@ -1,21 +1,21 @@
 -- =====================================================
--- Snowflake Cortex Analyst Semantic Layer Objects V2
+-- Snowflake Cortex Analyst Semantic Layer Objects
 -- =====================================================
 -- This script creates semantic objects for Cortex Analyst
 -- Maps physical tables to business-friendly semantic objects
 -- =====================================================
--- NOTE: Run create_demo_data_v2.sql first to create:
---   - RETAIL_SI_DEMO_ADMIN_V2 role
---   - RETAIL_SI_DEMO_WH_V2 warehouse
---   - Retail_SI_Demo_v2 database and schema
+-- NOTE: Run create_demo_data.sql first to create:
+--   - RETAIL_SI_DEMO_ADMIN role
+--   - RETAIL_SI_DEMO_WH warehouse
+--   - Retail_SI_Demo database and schema
 --   - All base tables
 -- =====================================================
 
 -- Use the admin role to create all views
-USE ROLE RETAIL_SI_DEMO_ADMIN_V2;
-USE WAREHOUSE RETAIL_SI_DEMO_WH_V2;
-USE DATABASE Retail_SI_Demo_v2;
-USE SCHEMA Retail_SI_Demo_v2;
+USE ROLE RETAIL_SI_DEMO_ADMIN;
+USE WAREHOUSE RETAIL_SI_DEMO_WH;
+USE DATABASE Retail_SI_Demo;
+USE SCHEMA Retail_SI_Demo;
 
 -- =====================================================
 -- SEMANTIC MODELS (Using Views Instead)
@@ -293,12 +293,12 @@ GROUP BY p.product_id, p.product_name, p.category, p.brand, s.state_abbr, s.divi
 
 
 -- Grant privileges on all views to the admin role
-GRANT ALL PRIVILEGES ON ALL VIEWS IN SCHEMA Retail_SI_Demo_v2.Retail_SI_Demo_v2 TO ROLE RETAIL_SI_DEMO_ADMIN_V2;
+GRANT ALL PRIVILEGES ON ALL VIEWS IN SCHEMA Retail_SI_Demo.Retail_SI_Demo TO ROLE RETAIL_SI_DEMO_ADMIN;
 
 -- =====================================================
 -- END OF SEMANTIC LAYER SETUP
 -- =====================================================
 
-SELECT 'Semantic layer objects created successfully for Cortex Analyst V2!' as status;
-SELECT 'All views granted to RETAIL_SI_DEMO_ADMIN_V2 role!' as role_status;
+SELECT 'Semantic layer objects created successfully for Cortex Analyst!' as status;
+SELECT 'All views granted to RETAIL_SI_DEMO_ADMIN role!' as role_status;
 
